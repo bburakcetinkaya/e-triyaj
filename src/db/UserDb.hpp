@@ -29,8 +29,8 @@ public:
 
   QUERY(createUser,
         "INSERT INTO AppUser"
-        "(name, surname, role, RFID) VALUES "
-        "(:user.name, :user.surname, :user.role, :user.RFID);",
+        "(name, surname, role, tc) VALUES "
+        "(:user.name, :user.surname, :user.role, :user.tc);",
         PARAM(oatpp::Object<UserDto>, user))
 
   QUERY(updateUser,
@@ -39,15 +39,12 @@ public:
         " name=:user.name, "
         " surname=:user.surname, "
         " role=:user.role, "
-        " RFID=:user.RFID "
+        " tc=:user.tc "
         "WHERE "
         " id=:user.id;",
         PARAM(oatpp::Object<UserDto>, user))
 
-  QUERY(getUserByRFID,
-        "SELECT * FROM AppUser WHERE RFID=:RFID;",
-        PARAM(oatpp::String, RFID))
-  
+    
  //----------------------------------------------------------------------------------------------
       QUERY(getUserById,
           "SELECT * FROM AppUser WHERE id=:id;",

@@ -39,7 +39,7 @@ void run() {
   /* create server */
   oatpp::network::Server server(connectionProvider,
                                 connectionHandler);
-  
+  OATPP_LOGD("Server", "Running on address %s...", connectionProvider->getProperty("host").toString()->c_str());
   OATPP_LOGD("Server", "Running on port %s...", connectionProvider->getProperty("port").toString()->c_str());
   
   server.run();

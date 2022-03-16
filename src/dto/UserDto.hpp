@@ -22,7 +22,6 @@ class UserDto : public oatpp::DTO {
   DTO_FIELD(String, role, "role");
   DTO_FIELD(UInt64, tc, "tc");
  // DTO_FIELD(String, time, "time");
-  DTO_FIELD(String, RFID, "RFID");
 
 };
 

@@ -20,7 +20,6 @@ public:
 
   oatpp::Object<UserDto> createUser(const oatpp::Object<UserDto>& dto);
   oatpp::Object<UserDto> updateUser(const oatpp::Object<UserDto>& dto);
-  oatpp::Object<UserDto> getUserByRFID(const oatpp::String& RFID);
   oatpp::Object<UserDto> getUserById(const oatpp::Int32& id);
   oatpp::Object<UserDto> getUserByTc(const oatpp::UInt64& tc);
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getUsers(const oatpp::UInt32& offset, const oatpp::UInt32& limit);

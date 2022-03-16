@@ -85,32 +85,7 @@ public:
     userDto->id = userId;
     return createDtoResponse(Status::CODE_200, m_userService.updateUser(userDto));
   }
-  
-  //ADD_CORS(getUserByRFID)
-
-  ADD_CORS(getUserByRFID,
-      "http://localhost:4200",
-      "GET, ,PUT, POST, OPTIONS, DELETE",
-      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
-      "1728000");
-
-
-  ENDPOINT_INFO(getUserByRFID) {
-    info->summary = "Get one User by RFID";
-
-    info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
-    info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
-    info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
-
-    info->queryParams["RFID"].description = "User RFID";
-  }
-  ENDPOINT("GET", "users/getByRFID/{RFID}", getUserByRFID,
-      PATH(String, RFID))
-  {
-     
-    return createDtoResponse(Status::CODE_200, m_userService.getUserByRFID(RFID));
-  }
-  
+    
   //-------------------------------------------------------------------------------------------------------------------
   //ADD_CORS(getUserById)
 
@@ -156,9 +131,9 @@ public:
 
   }
   ENDPOINT("GET", "users/getByTc/{userTC}", getUserByTc,
-      PATH(UInt64, tc))
+      PATH(UInt64, userTC))
   {
-      return createDtoResponse(Status::CODE_200, m_userService.getUserByTc(tc));
+      return createDtoResponse(Status::CODE_200, m_userService.getUserByTc(userTC));
   }
   //-------------------------------------------------------------------------------------------------------------------
   //ADD_CORS(getUsers)
