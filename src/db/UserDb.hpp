@@ -29,10 +29,14 @@ public:
 
   QUERY(createUser,
         "INSERT INTO AppUser"
-        "(name, surname, role, tc) VALUES "
-        "(:user.name, :user.surname, :user.role, :user.tc);",
+        "(name, surname, role, tc, sp02, heartRate, temperature, systolicBP, diastolicBP) VALUES "
+        "(:user.name, :user.surname, :user.role, :user.tc, :user.sp02, :user.heartRate, :user.temperature, :user.systolicBP, :user.diastolicBP);",
         PARAM(oatpp::Object<UserDto>, user))
-
+      /*  DTO_FIELD(double, sp02, "sp02");
+  DTO_FIELD(double, heartRate, "heartRate");
+  DTO_FIELD(double, temperature, "temperature");
+  DTO_FIELD(double, systolicBP, "systolicBP");
+  DTO_FIELD(double, diastolicBP, "diastolicBP");*/
   QUERY(updateUser,
         "UPDATE AppUser "
         "SET "
@@ -40,6 +44,12 @@ public:
         " surname=:user.surname, "
         " role=:user.role, "
         " tc=:user.tc "
+        " sp02=:user.sp02 "
+        " heartRate=:user.heartRate "
+        " temperature=:user.temperature "
+        " systolicBP=:user.systolicBP "
+        " diastolicBP=:user.diastolicBP "
+        
         "WHERE "
         " id=:user.id;",
         PARAM(oatpp::Object<UserDto>, user))
@@ -60,7 +70,7 @@ public:
         PARAM(oatpp::UInt32, limit))
 
   QUERY(deleteUserByUserId,
-      "DELETE FROM AppUser WHERE id=:id;",
+      "DELETE FROM AppUser WHERE tc=:tc;",
         PARAM(oatpp::Int32, id))
 
     QUERY(getAllUsers,

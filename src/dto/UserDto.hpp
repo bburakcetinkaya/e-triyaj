@@ -21,6 +21,11 @@ class UserDto : public oatpp::DTO {
   DTO_FIELD(String, surname, "surname");
   DTO_FIELD(String, role, "role");
   DTO_FIELD(UInt64, tc, "tc");
+  DTO_FIELD(Float32, sp02, "sp02");
+  DTO_FIELD(Float32, heartRate, "heartRate");
+  DTO_FIELD(Float32, temperature, "temperature");
+  DTO_FIELD(Float32, systolicBP, "systolicBP");
+  DTO_FIELD(Float32, diastolicBP, "diastolicBP");
  // DTO_FIELD(String, time, "time");
 
 };

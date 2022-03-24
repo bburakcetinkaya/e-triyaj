@@ -29,7 +29,8 @@ public:
       "    <meta charset=utf-8/>"
       "  </head>"
       "  <body>"
-      "    <a href='swagger/ui'>Checkout Swagger-UI page</a>"
+      "    <a href='swagger/ui'>E_TRIYAJ API SWAGGER</a>"
+     // "    <a href='/'>E_TRIYAJ API SWAGGER</a>"
       "  </body>"
       "</html>";
     auto response = createResponse(Status::CODE_200, html);
