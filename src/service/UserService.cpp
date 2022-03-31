@@ -41,18 +41,24 @@ oatpp::Object<UserDto> UserService::getUserById(const oatpp::Int32& id)
 
 
 //--------------------------------------------------------------------------------------------------------------------
-oatpp::Object<UserDto> UserService::getUserByTc(const oatpp::UInt64& tc)
+oatpp::Object<PageDto<oatpp::Object<UserDto>>> UserService::getUserRecordsByTc(const oatpp::UInt64& tc)
 {
 
-    auto dbResult = m_database->getUserByTc(tc);
+    auto dbResult = m_database->getUserRecordsByTc(tc);
     OATPP_ASSERT_HTTP(dbResult->isSuccess(), Status::CODE_500, dbResult->getErrorMessage());
     OATPP_ASSERT_HTTP(dbResult->hasMoreToFetch(), Status::CODE_404, "User not found");
 
-    auto result = dbResult->fetch<oatpp::Vector<oatpp::Object<UserDto>>>();
 
     OATPP_ASSERT_HTTP(result->size() == 1, Status::CODE_500, "Unknown error");
 
-    return result[0];
+    auto items = dbResult->fetch<oatpp::Vector<oatpp::Object<UserDto>>>();
+
+    auto page = PageDto<oatpp::Object<UserDto>>::createShared();
+    page->count = items->size();
+    page->items = items;
+
+    return page;
+   //return result[0];
 
 }
 

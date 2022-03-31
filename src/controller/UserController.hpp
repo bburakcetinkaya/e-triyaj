@@ -113,15 +113,15 @@ public:
   }
   //-------------------------------------------------------------------------------------------------------
   //get by tc
-  ADD_CORS(getUserByTc,
+  ADD_CORS(getUserRecordsByTc,
       "http://localhost:4200",
       "GET, ,PUT, POST, OPTIONS, DELETE",
       "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
       "1728000");
 
 
-  ENDPOINT_INFO(getUserByTc) {
-      info->summary = "Get one User by user TC";
+  ENDPOINT_INFO(getUserRecordsByTc) {
+      info->summary = "Get User Records by user TC";
 
       info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
       info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
@@ -130,10 +130,10 @@ public:
       info->pathParams["userTC"].description = "User TC number";
 
   }
-  ENDPOINT("GET", "users/getByTc/{userTC}", getUserByTc,
+  ENDPOINT("GET", "users/getUserRecordsByTc/{userTC}", getUserRecordsByTc,
       PATH(UInt64, userTC))
   {
-      return createDtoResponse(Status::CODE_200, m_userService.getUserByTc(userTC));
+      return createDtoResponse(Status::CODE_200, m_userService.getUserRecordsByTc(userTC));
   }
   //-------------------------------------------------------------------------------------------------------------------
   //ADD_CORS(getUsers)
