@@ -200,7 +200,54 @@ public:
   {
     return createDtoResponse(Status::CODE_200, m_userService.deleteUserByUserId(userId));
   }
-};
+  ADD_CORS(getEntriesByDateInterval,
+      "http://localhost:4200",
+      "GET, ,PUT, POST, OPTIONS, DELETE",
+      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+      "1728000");
+
+
+
+  ENDPOINT_INFO(getEntriesByDateInterval) {
+      info->summary = "get entries by date interval";
+
+      info->addResponse<Object<StatusDto>>(Status::CODE_200, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+
+      info->pathParams["userId"].description = "User Identifier";
+  }
+  ENDPOINT("GET", "/users/startDate/{startDate}/endDate/{endDate}", getEntriesByDateInterval,
+      PATH(String, startDate),
+      PATH(String, endDate))
+  {
+      return createDtoResponse(Status::CODE_200, m_userService.getEntriesByDateInterval(startDate,endDate));
+  }
+  ADD_CORS(getEntriesByDateIntervalAndTc,
+      "http://localhost:4200",
+      "GET, ,PUT, POST, OPTIONS, DELETE",
+      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+      "1728000");
+
+
+
+  ENDPOINT_INFO(getEntriesByDateIntervalAndTc) {
+      info->summary = "get entries by date interval and tc";
+
+      info->addResponse<Object<StatusDto>>(Status::CODE_200, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+
+      info->pathParams["tc"].description = "tc number";
+      info->pathParams["startDate"].description = "start date";
+      info->pathParams["endDate"].description = "end date";
+  }
+  ENDPOINT("GET", "users/tc/{tc}/startDate/{startDate}/endDate/{endDate}", getEntriesByDateIntervalAndTc,
+      PATH(UInt64, tc),
+      PATH(String, startDate),
+      PATH(String, endDate))
+  {
+      return createDtoResponse(Status::CODE_200, m_userService.getEntriesByDateIntervalAndTc(tc ,startDate, endDate));
+  }
+};/////users/tc/{tc}/startDate/{startDate}/endDate/{endDate}
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 

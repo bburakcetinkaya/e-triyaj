@@ -49,8 +49,8 @@ public:
 
   QUERY(createUser,
         "INSERT INTO AppUser"
-        "(name,         surname,        age,        gender,     tc,         sp02,       heartRate,       temperature,       systolicBP,         diastolicBP,    role,    time) VALUES "
-        "(:user.name, :user.surname, :user.age, :user.gender, :user.tc, :user.sp02, :user.heartRate, :user.temperature, :user.systolicBP, :user.diastolicBP, :user.role, datetime());",
+        "(name,         surname,        age,        gender,     tc,         sp02,       heartRate,       temperature,       systolicBP,         diastolicBP,    role,   date,  time) VALUES "
+        "(:user.name, :user.surname, :user.age, :user.gender, :user.tc, :user.sp02, :user.heartRate, :user.temperature, :user.systolicBP, :user.diastolicBP, :user.role, :user.date ,:user.time);",
         PARAM(oatpp::Object<UserDto>, user))
       /*  DTO_FIELD(double, sp02, "sp02");
   DTO_FIELD(double, heartRate, "heartRate");
@@ -71,7 +71,8 @@ public:
         " systolicBP=:user.systolicBP, "
         " diastolicBP=:user.diastolicBP, "
         " role=:user.role, "
-        " time = GETDATE()"
+        " date =:user.date,"
+        " time =:user.time,"
 
         
         "WHERE "
@@ -97,9 +98,19 @@ public:
       "DELETE FROM AppUser WHERE tc=:tc;",
         PARAM(oatpp::Int32, id))
 
-    QUERY(getAllUsers,
+  QUERY(getAllUsers,
         "SELECT * FROM AppUser")
 
+  QUERY(getEntriesByDateInterval,
+      "SELECT * FROM AppUser WHERE :startDate <= date AND :endDate >= date ;",
+      PARAM(oatpp::String, startDate),
+      PARAM(oatpp::String, endDate))
+
+  QUERY(getEntriesByDateIntervalAndTc,
+      "SELECT * FROM AppUser WHERE tc=:tc AND :startDate <= date AND :endDate >= date ;",
+      PARAM(oatpp::UInt64, tc),
+      PARAM(oatpp::String, startDate),
+      PARAM(oatpp::String, endDate))
 };
 
 #include OATPP_CODEGEN_END(DbClient) //<- End Codegen

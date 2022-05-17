@@ -33,6 +33,7 @@ class UserDto : public oatpp::DTO {
   DTO_FIELD(Float32, systolicBP, "systolicBP");
   DTO_FIELD(Float32, diastolicBP, "diastolicBP");
   DTO_FIELD(Enum<Role>::AsString, role, "role");
+  DTO_FIELD(String, date, "date");
   DTO_FIELD(String, time, "time");
 
 };

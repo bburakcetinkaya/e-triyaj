@@ -25,7 +25,8 @@ public:
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getUsers(const oatpp::UInt32& offset, const oatpp::UInt32& limit);
   oatpp::Object<StatusDto> deleteUserByUserId(const oatpp::Int32& userId);
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getAllUsers();
-
-};
+  oatpp::Object<PageDto<oatpp::Object<UserDto>>> getEntriesByDateInterval(const oatpp::String startDate, const oatpp::String endDate);
+  oatpp::Object<PageDto<oatpp::Object<UserDto>>> getEntriesByDateIntervalAndTc(const oatpp::UInt64 tc ,const oatpp::String startDate, const oatpp::String endDate);
+};///users/tc/{tc}/startDate/{startDate}/endDate/{endDate}
 
 #endif //CRUD_USERSERVICE_HPP
