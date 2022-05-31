@@ -15,8 +15,14 @@
 
 #include "oatpp/core/macro/component.hpp"
 
-const char ip[] = "192.168.198.89";
-const int port = 80;
+oatpp::String getIpFromConfigFile()
+{        
+        oatpp::String ip =oatpp::base::StrBuffer::loadFromFile("config/ipconfig.txt"); //read data from file object and put it into string.
+        return ip;
+}
+
+//const char ip[] = "192.168.1.22";
+//const int port = 80;
 /**
  *  Class which creates and holds Application components and registers components in oatpp::base::Environment
  *  Order of components initialization is from top to bottom
@@ -50,7 +56,7 @@ public:
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
       
       //std::cout << "Server started at: 192.168.1.29" << std::endl;
-      return oatpp::network::tcp::server::ConnectionProvider::createShared({ip ,port , oatpp::network::Address::IP_4});
+      return oatpp::network::tcp::server::ConnectionProvider::createShared({ getIpFromConfigFile(),8000, oatpp::network::Address::IP_4});
 
   }());
   

@@ -37,30 +37,51 @@ public:
   //----------------------------------------------------------------------------------------------------
  //  ADD_CORS(createUser, "192.168.1.27", "POST,GET, OPTIONS", "X-PWNT", "1337");
     //----------------------------------------------------------------------------------------------------
-   ADD_CORS(createUser,
-       "http://localhost:4200",
-       "GET, ,PUT, POST, OPTIONS, DELETE",
-       "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
-       "1728000");
-
-  ENDPOINT_INFO(createUser) {
-    info->summary = "Create new User";
-
-    info->addConsumes<Object<UserDto>>("application/json");
-
-    info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
-    info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
-    info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
-  }
-  ENDPOINT("POST", "users/createUser", createUser, 
-      BODY_DTO(Object<UserDto>, userDto))
-  {
-  
-    return createDtoResponse(Status::CODE_200, m_userService.createUser(userDto));
-  }
+ 
   
   //ADD_CORS(putUser)
+  ADD_CORS(newUser,
+      "http://localhost:4200",
+      "GET, ,PUT, POST, OPTIONS, DELETE",
+      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+      "1728000");
 
+
+  ENDPOINT_INFO(newUser) {
+      info->summary = "new user";
+
+      info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+
+  }
+  ENDPOINT("POST", "users/newUser", newUser,
+      BODY_DTO(Object<LoginDto>, loginDto))
+  {
+      return createDtoResponse(Status::CODE_200, m_userService.newUser(loginDto));
+  }
+  //-------------
+  ADD_CORS(createUser,
+      "http://localhost:4200",
+      "GET, ,PUT, POST, OPTIONS, DELETE",
+      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+      "1728000");
+
+  ENDPOINT_INFO(createUser) {
+      info->summary = "Create new User";
+
+      info->addConsumes<Object<UserDto>>("application/json");
+
+      info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+  }
+  ENDPOINT("POST", "users/createUser", createUser,
+      BODY_DTO(Object<UserDto>, userDto))
+  {
+
+      return createDtoResponse(Status::CODE_200, m_userService.createUser(userDto));
+  }
   ADD_CORS(putUser,
       "http://localhost:4200",
       "GET, ,PUT, POST, OPTIONS, DELETE",
@@ -247,7 +268,34 @@ public:
   {
       return createDtoResponse(Status::CODE_200, m_userService.getEntriesByDateIntervalAndTc(tc ,startDate, endDate));
   }
-};/////users/tc/{tc}/startDate/{startDate}/endDate/{endDate}
+
+  ADD_CORS(requestLogin,
+      "http://localhost:4200",
+      "GET, ,PUT, POST, OPTIONS, DELETE",
+      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+      "1728000");
+
+
+  ENDPOINT_INFO(requestLogin) {
+      info->summary = "request login";
+
+      info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+
+      info->pathParams["name"].description = "name";
+      info->pathParams["password"].description = "password";
+
+  }
+  ENDPOINT("GET", "users/requestLogin/name/{name}/password/{password}", requestLogin,
+      PATH(String, name),
+      PATH(String, password))
+  {
+      return createDtoResponse(Status::CODE_200, m_userService.requestLogin(name,password));
+  }
+  //------------------
+
+};/////users/tc/{tc}/startDate/{startDate}/endDate/{endDate}requestLogin
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 

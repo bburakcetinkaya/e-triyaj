@@ -3,6 +3,7 @@
 #define CRUD_USERDB_HPP
 
 #include "dto/UserDto.hpp"
+#include "dto/LoginDto.hpp"
 #include "oatpp-sqlite/orm.hpp"
 #include <iostream>
 //#include <chrono>
@@ -46,7 +47,11 @@ public:
 
 
   //}
-
+  QUERY(newUser,
+        "INSERT INTO LoginTable"
+        "(name,password)"
+        "VALUES (:user.name, :user.password);",
+        PARAM(oatpp::Object<LoginDto>,user))
   QUERY(createUser,
         "INSERT INTO AppUser"
         "(name,         surname,        age,        gender,     tc,         sp02,       heartRate,       temperature,       systolicBP,         diastolicBP,    role,   date,  time) VALUES "
@@ -84,6 +89,10 @@ public:
       QUERY(getUserById,
           "SELECT * FROM AppUser WHERE id=:id;",
           PARAM(oatpp::Int32, id))
+      QUERY(requestLoginResponse,
+          "SELECT * FROM LoginTable WHERE id=:id;",
+          PARAM(oatpp::Int32,id))
+          
       QUERY(getUserRecordsByTc,
           "SELECT * FROM AppUser WHERE tc=:tc;",
           PARAM(oatpp::UInt64, tc))
@@ -111,6 +120,10 @@ public:
       PARAM(oatpp::UInt64, tc),
       PARAM(oatpp::String, startDate),
       PARAM(oatpp::String, endDate))
+  QUERY(requestLogin,
+      "SELECT * FROM LoginTable WHERE name=:name AND password=:password;",
+      PARAM(oatpp::String, name),
+      PARAM(oatpp::String, password))
 };
 
 #include OATPP_CODEGEN_END(DbClient) //<- End Codegen

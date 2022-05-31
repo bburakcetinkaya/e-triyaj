@@ -11,6 +11,17 @@ oatpp::Object<UserDto> UserService::createUser(const oatpp::Object<UserDto>& dto
 
   return getUserById(userId);
 
+}//newUser
+oatpp::Object<LoginDto> UserService::newUser(const oatpp::Object<LoginDto>& dto)
+{
+
+    auto dbResult = m_database->newUser(dto);
+    OATPP_ASSERT_HTTP(dbResult->isSuccess(), Status::CODE_500, dbResult->getErrorMessage());
+
+    auto userId = oatpp::sqlite::Utils::getLastInsertRowId(dbResult->getConnection());
+
+    return requestLoginResponse(userId);
+
 }
 
 oatpp::Object<UserDto> UserService::updateUser(const oatpp::Object<UserDto>& dto) 
@@ -70,7 +81,37 @@ oatpp::Object<PageDto<oatpp::Object<UserDto>>> UserService::getEntriesByDateInte
     page->count = items->size();
     page->items = items;
 
-    return page;
+    return page;//requestLogin
+}
+
+oatpp::Object<LoginDto> UserService::requestLogin(const oatpp::String name, const oatpp::String password)
+{
+
+    auto dbResult = m_database->requestLogin(name, password);
+    OATPP_ASSERT_HTTP(dbResult->isSuccess(), Status::CODE_500, dbResult->getErrorMessage());
+    OATPP_ASSERT_HTTP(dbResult->hasMoreToFetch(), Status::CODE_404, "User not found");
+
+    auto result = dbResult->fetch<oatpp::Vector<oatpp::Object<LoginDto>>>();
+
+    OATPP_ASSERT_HTTP(result->size() == 1, Status::CODE_500, "Unknown error");
+
+    return result[0];
+
+}
+oatpp::Object<LoginDto> UserService::requestLoginResponse(const oatpp::Int32& id)
+{
+
+
+    auto dbResult = m_database->requestLoginResponse(id);
+    OATPP_ASSERT_HTTP(dbResult->isSuccess(), Status::CODE_500, dbResult->getErrorMessage());
+    OATPP_ASSERT_HTTP(dbResult->hasMoreToFetch(), Status::CODE_404, "User not found");
+
+    auto result = dbResult->fetch<oatpp::Vector<oatpp::Object<LoginDto>>>();
+
+    OATPP_ASSERT_HTTP(result->size() == 1, Status::CODE_500, "Unknown error");
+
+    return result[0];    
+
 }
 
 //-----------------------------------------------------------------------------------------------------------------------

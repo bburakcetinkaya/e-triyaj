@@ -13,7 +13,7 @@ public:
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::provider::Provider<oatpp::sqlite::Connection>>, dbConnectionProvider)([] {
 
     /* Create database-specific ConnectionProvider */
-    auto connectionProvider = std::make_shared<oatpp::sqlite::ConnectionProvider>(DATABASE_FILE);
+    auto connectionProvider = std::make_shared<oatpp::sqlite::ConnectionProvider>("db//e-triyajDB.sqlite");
 
     /* Create database-specific ConnectionPool */
     return oatpp::sqlite::ConnectionPool::createShared(connectionProvider,

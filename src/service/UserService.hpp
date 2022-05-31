@@ -3,11 +3,13 @@
 #define CRUD_USERSERVICE_HPP
 
 #include "db/UserDb.hpp"
+#include "dto/LoginDto.hpp"
 #include "dto/PageDto.hpp"
 #include "dto/StatusDto.hpp"
 
 #include "oatpp/web/protocol/http/Http.hpp"
 #include "oatpp/core/macro/component.hpp"
+
 
 #include <iostream>
 
@@ -18,7 +20,8 @@ private:
   OATPP_COMPONENT(std::shared_ptr<UserDb>, m_database);
 public:
 
-  oatpp::Object<UserDto> createUser(const oatpp::Object<UserDto>& dto);
+  oatpp::Object<UserDto> createUser(const oatpp::Object<UserDto>& dto);//newUser
+  oatpp::Object<LoginDto> newUser(const oatpp::Object<LoginDto>& dto);
   oatpp::Object<UserDto> updateUser(const oatpp::Object<UserDto>& dto);
   oatpp::Object<UserDto> getUserById(const oatpp::Int32& id);
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getUserRecordsByTc(const oatpp::UInt64& tc);
@@ -27,6 +30,10 @@ public:
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getAllUsers();
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getEntriesByDateInterval(const oatpp::String startDate, const oatpp::String endDate);
   oatpp::Object<PageDto<oatpp::Object<UserDto>>> getEntriesByDateIntervalAndTc(const oatpp::UInt64 tc ,const oatpp::String startDate, const oatpp::String endDate);
+
+  oatpp::Object<LoginDto> requestLogin(const oatpp::String name, const oatpp::String password);
+  oatpp::Object<LoginDto> requestLoginResponse(const oatpp::Int32& id);
 };///users/tc/{tc}/startDate/{startDate}/endDate/{endDate}
+
 
 #endif //CRUD_USERSERVICE_HPP
