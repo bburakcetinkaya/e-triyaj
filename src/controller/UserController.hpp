@@ -156,6 +156,28 @@ public:
   {
       return createDtoResponse(Status::CODE_200, m_userService.getUserRecordsByTc(userTC));
   }
+  ADD_CORS(getUserRecordsByDoctorID,
+      "http://localhost:4200",
+      "GET, ,PUT, POST, OPTIONS, DELETE",
+      "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range",
+      "1728000");
+
+
+  ENDPOINT_INFO(getUserRecordsByDoctorID) {
+      info->summary = "Get User Records by user doctor";
+
+      info->addResponse<Object<UserDto>>(Status::CODE_200, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
+      info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
+
+      info->pathParams["doctorID"].description = "Doctor ID";
+
+  }
+  ENDPOINT("GET", "users/getUserRecordsByDoctorID/{doctorID}", getUserRecordsByDoctorID,
+      PATH(UInt64, doctorID))
+  {
+      return createDtoResponse(Status::CODE_200, m_userService.getUserRecordsByDoctorID(doctorID));
+  }
   //-------------------------------------------------------------------------------------------------------------------
   //ADD_CORS(getUsers)
 
@@ -283,15 +305,15 @@ public:
       info->addResponse<Object<StatusDto>>(Status::CODE_404, "application/json");
       info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
 
-      info->pathParams["name"].description = "name";
+      info->pathParams["tc"].description = "tc";
       info->pathParams["password"].description = "password";
 
   }
-  ENDPOINT("GET", "users/requestLogin/name/{name}/password/{password}", requestLogin,
-      PATH(String, name),
+  ENDPOINT("GET", "users/requestLogin/tc/{tc}/password/{password}", requestLogin,
+      PATH(UInt64, tc),
       PATH(String, password))
   {
-      return createDtoResponse(Status::CODE_200, m_userService.requestLogin(name,password));
+      return createDtoResponse(Status::CODE_200, m_userService.requestLogin(tc,password));
   }
   //------------------
 

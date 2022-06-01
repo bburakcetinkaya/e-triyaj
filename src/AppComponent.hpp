@@ -12,13 +12,27 @@
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
 
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
+#include "oatpp/core/utils/ConversionUtils.hpp"
 
 #include "oatpp/core/macro/component.hpp"
 
 oatpp::String getIpFromConfigFile()
 {        
+    
         oatpp::String ip =oatpp::base::StrBuffer::loadFromFile("config/ipconfig.txt"); //read data from file object and put it into string.
         return ip;
+}
+oatpp::UInt16 getPortFromConfigFile()
+{
+    bool ok;
+    oatpp::String portStr = oatpp::base::StrBuffer::loadFromFile("config/portconfig.txt"); 
+    oatpp::Int32 port = oatpp::utils::conversion::strToUInt32(portStr, ok);
+    if (ok)
+    {
+        return static_cast<oatpp::UInt16>(port);
+    }
+    else
+        return 8000;
 }
 
 //const char ip[] = "192.168.1.22";
@@ -56,7 +70,12 @@ public:
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
       
       //std::cout << "Server started at: 192.168.1.29" << std::endl;
-      return oatpp::network::tcp::server::ConnectionProvider::createShared({ getIpFromConfigFile(),8000, oatpp::network::Address::IP_4});
+      oatpp::String ip = getIpFromConfigFile();
+      oatpp::UInt16 port = getPortFromConfigFile();
+      //OATPP_LOGD("ip", " %s...", ip.toString()->c_str());
+      //OATPP_LOGD("port", " %s...", port.toString()->c_str());
+      
+      return oatpp::network::tcp::server::ConnectionProvider::createShared({ ip,port, oatpp::network::Address::IP_4});
 
   }());
   

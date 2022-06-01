@@ -49,19 +49,35 @@ public:
   //}
   QUERY(newUser,
         "INSERT INTO LoginTable"
-        "(name,password)"
-        "VALUES (:user.name, :user.password);",
+        "(tc,name,surname,role,password)"
+        "VALUES (:user.tc,:user.name,:user.surname,:user.role,:user.password);",
         PARAM(oatpp::Object<LoginDto>,user))
+      /*    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+             tc		VARCHAR,
+             name	VARCHAR,
+            surname     VARCHAR,
+            role	VARCHAR,
+              password	VARCHAR*/
   QUERY(createUser,
         "INSERT INTO AppUser"
-        "(name,         surname,        age,        gender,     tc,         sp02,       heartRate,       temperature,       systolicBP,         diastolicBP,    role,   date,  time) VALUES "
-        "(:user.name, :user.surname, :user.age, :user.gender, :user.tc, :user.sp02, :user.heartRate, :user.temperature, :user.systolicBP, :user.diastolicBP, :user.role, :user.date ,:user.time);",
+        "(name,         surname,        age,        gender,     tc,         sp02,       heartRate,       temperature,       systolicBP,         diastolicBP,   doctorID, onlyMyDoctor,  date,  time) VALUES "
+        "(:user.name, :user.surname, :user.age, :user.gender, :user.tc, :user.sp02, :user.heartRate, :user.temperature, :user.systolicBP, :user.diastolicBP,  :user.doctorID, :user.onlyMyDoctor, :user.date ,:user.time);",
         PARAM(oatpp::Object<UserDto>, user))
-      /*  DTO_FIELD(double, sp02, "sp02");
-  DTO_FIELD(double, heartRate, "heartRate");
-  DTO_FIELD(double, temperature, "temperature");
-  DTO_FIELD(double, systolicBP, "systolicBP");
-  DTO_FIELD(double, diastolicBP, "diastolicBP");*/
+                                                                                                                      /*    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                                                                                    name   	VARCHAR,
+                                                                                                                    surname   	VARCHAR,
+                                                                                                                    age		INTEGER,
+                                                                                                                    gender	VARCHAR,
+                                                                                                                    tc		NUMERIC,
+                                                                                                                    sp02	NUMERIC,
+                                                                                                                    heartRate   NUMERIC,
+                                                                                                                    temperature NUMERIC,
+                                                                                                                    systolicBP  NUMERIC,
+                                                                                                                    diastolicBP NUMERIC,
+                                                                                                                    doctorID	NUMERIC,
+                                                                                                                    onlyMyDoctor VARCHAR,
+                                                                                                                    date	VARCHAR,
+                                                                                                                    time	VARCHAR*/
   QUERY(updateUser,
         "UPDATE AppUser "
         "SET "
@@ -76,6 +92,7 @@ public:
         " systolicBP=:user.systolicBP, "
         " diastolicBP=:user.diastolicBP, "
         " role=:user.role, "
+        " doctorID=doctoID,"
         " date =:user.date,"
         " time =:user.time,"
 
@@ -96,6 +113,9 @@ public:
       QUERY(getUserRecordsByTc,
           "SELECT * FROM AppUser WHERE tc=:tc;",
           PARAM(oatpp::UInt64, tc))
+      QUERY(getUserRecordsByDoctorID,
+          "SELECT * FROM AppUser WHERE doctorID:doctorID",
+          PARAM(oatpp::UInt64,doctorID))
  //----------------------------------------------------------------------------------------------
 
   QUERY(getUsers,
@@ -121,8 +141,8 @@ public:
       PARAM(oatpp::String, startDate),
       PARAM(oatpp::String, endDate))
   QUERY(requestLogin,
-      "SELECT * FROM LoginTable WHERE name=:name AND password=:password;",
-      PARAM(oatpp::String, name),
+      "SELECT * FROM LoginTable WHERE tc=:tc AND password=:password;",
+      PARAM(oatpp::UInt64, tc),
       PARAM(oatpp::String, password))
 };
 

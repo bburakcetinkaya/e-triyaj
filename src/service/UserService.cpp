@@ -69,6 +69,20 @@ oatpp::Object<PageDto<oatpp::Object<UserDto>>> UserService::getUserRecordsByTc(c
    //return result[0];
 
 }
+oatpp::Object<PageDto<oatpp::Object<UserDto>>> UserService::getUserRecordsByDoctorID(const oatpp::UInt64& doctorID)
+{
+    auto dbResult = m_database->getUserRecordsByDoctorID(doctorID);
+    OATPP_ASSERT_HTTP(dbResult->isSuccess(), Status::CODE_500, dbResult->getErrorMessage());
+    OATPP_ASSERT_HTTP(dbResult->hasMoreToFetch(), Status::CODE_404, "User not found");
+
+    auto items = dbResult->fetch<oatpp::Vector<oatpp::Object<UserDto>>>();
+
+    auto page = PageDto<oatpp::Object<UserDto>>::createShared();
+    page->count = items->size();
+    page->items = items;
+
+    return page;
+}
 oatpp::Object<PageDto<oatpp::Object<UserDto>>> UserService::getEntriesByDateIntervalAndTc(const oatpp::UInt64 tc, const oatpp::String startDate, const oatpp::String endDate)
 {
     auto dbResult = m_database->getEntriesByDateIntervalAndTc(tc,startDate,endDate);
@@ -84,10 +98,10 @@ oatpp::Object<PageDto<oatpp::Object<UserDto>>> UserService::getEntriesByDateInte
     return page;//requestLogin
 }
 
-oatpp::Object<LoginDto> UserService::requestLogin(const oatpp::String name, const oatpp::String password)
+oatpp::Object<LoginDto> UserService::requestLogin(const oatpp::UInt64 tc, const oatpp::String password)
 {
 
-    auto dbResult = m_database->requestLogin(name, password);
+    auto dbResult = m_database->requestLogin(tc, password);
     OATPP_ASSERT_HTTP(dbResult->isSuccess(), Status::CODE_500, dbResult->getErrorMessage());
     OATPP_ASSERT_HTTP(dbResult->hasMoreToFetch(), Status::CODE_404, "User not found");
 

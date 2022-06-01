@@ -6,16 +6,17 @@
 #include <iostream>
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-ENUM(Role, v_int32,
-    VALUE(PATIENT, 0, "ROLE_PATIENT"),
-    VALUE(DOKTOR, 1, "ROLE_DOKTOR")
-);
+
 ENUM(Gender, v_int32,
     VALUE(MALE, 0, "MALE"),
     VALUE(FEMALE, 1, "FEMALE")
 
 );
+ENUM(OnlyMyDoctor, v_int32,
+    VALUE(TRUE, 0, "TRUE"),
+    VALUE(FALSE, 1, "FALSE")
 
+);
 class UserDto : public oatpp::DTO {
   
   DTO_INIT(UserDto, DTO)
@@ -32,9 +33,26 @@ class UserDto : public oatpp::DTO {
   DTO_FIELD(Float32, temperature, "temperature");
   DTO_FIELD(Float32, systolicBP, "systolicBP");
   DTO_FIELD(Float32, diastolicBP, "diastolicBP");
-  DTO_FIELD(Enum<Role>::AsString, role, "role");
+  DTO_FIELD(UInt64, doctorID, "doctorID");
+  DTO_FIELD(Enum<OnlyMyDoctor>::AsString, onlyMyDoctor, "onlyMyDoctor");
   DTO_FIELD(String, date, "date");
   DTO_FIELD(String, time, "time");
+  /*    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    name   	VARCHAR,
+    surname   	VARCHAR,
+    age		INTEGER,
+    gender	VARCHAR,
+    tc		NUMERIC,
+    password	NUMERIC,
+    sp02	NUMERIC,
+    heartRate   NUMERIC,
+    temperature NUMERIC,
+    systolicBP  NUMERIC,
+    diastolicBP NUMERIC,
+    doctorID	NUMERIC,
+    onlyMyDoctor VARCHAR,
+    date	VARCHAR,
+    time	VARCHAR*/
 
 };
 
